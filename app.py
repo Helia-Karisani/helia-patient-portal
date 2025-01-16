@@ -15,29 +15,72 @@ api_key = os.getenv("OPENAI_API_KEY")
 # Initialize the OpenAI client
 client = OpenAI(api_key=api_key)
 
+
+
+# Token counting function
+
+def count_tokens(text):
+
+    return len(text.split())
+
+
+
+# Parsing and truncation logic
+
 def parse_patient(patient):
+
     return {
+
         "id": patient.get("id"),
+
         "name": " ".join(patient.get("name", [{}])[0].get("given", []) + [patient.get("name", [{}])[0].get("family", "")]),
+
         "gender": patient.get("gender"),
+
         "birthDate": patient.get("birthDate"),
-        "address": patient.get("address", [{}])[0].get("text"),
-        "Time": patient.get("meta", {}).get("lastUpdated", "No time available")
+
+        "address": patient.get("address", [{}])[0].get("text")
+
     }
 
-def parse_diagnosticreport(report, patient_id):
+
+
+def parse_diagnosticreport(report, patient_id, max_tokens=500):
+
     encoded_data = report.get("presentedForm", [{}])[0].get("data", "")
+
     try:
+
         decoded_data = base64.b64decode(encoded_data).decode("utf-8")
+
     except (ValueError, UnicodeDecodeError):
+
         decoded_data = "No meaningful data available"
 
+
+
+    text_tokens = count_tokens(decoded_data)
+
+    if text_tokens > max_tokens:
+
+        decoded_data = " ".join(decoded_data.split()[:max_tokens]) + " [TRUNCATED]"
+
+
+
     return {
+
         "patient_id": patient_id,
+
         "tests": ", ".join([result.get("display", "") for result in report.get("result", []) if result.get("display")]),
-        "data": decoded_data if len(decoded_data) > 0 and decoded_data != "0" else "No relevant information provided.",
+
+        "data": decoded_data,
+
         "Time": report.get("effectiveDateTime", "No time available")
+
     }
+
+
+
 
 def parse_care_plan(care_plan, patient_id):
     return {
@@ -113,10 +156,49 @@ def upload():
             return "No patient data found in the JSON."
 
         insights = generate_insights_with_openai(patient_data, care_plans, diagnostic_reports)
+        summaries = [insight[:300] + "..." for insight in insights]  # Truncated summaries for brevity
 
-        return render_template('results.html', insights=insights)
+
+
+        return render_template('results.html', insights=insights, summaries=summaries)
+
+
 
     return redirect(url_for('index'))
+
+
+
+@app.route('/medical_history')
+
+def medical_history():
+
+    return render_template('medical_history.html')
+
+
+
+@app.route('/personal_info')
+
+def personal_info():
+
+    return render_template('personal_info.html')
+
+
+
+@app.route('/appointments')
+
+def appointments():
+
+    return render_template('appointments.html')
+
+
+
+@app.route('/contact')
+
+def contact():
+
+    return render_template('contact.html')
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -8,15 +8,32 @@
 </head>
 <body>
     <header>
-        <h1>Generated Insights</h1>
+        <h1>Insights and Summaries</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/medical_history">Medical History</a>
+            <a href="/personal_info">Personal Info</a>
+            <a href="/appointments">Appointments</a>
+            <a href="/contact">Contact Us</a>
+        </nav>
     </header>
     <main>
-        <h2>Insights for the Uploaded File</h2>
-        <ul>
-            {% for insight in insights %}
-                <li>{{ insight }}</li>
-            {% endfor %}
-        </ul>
+        <section>
+            <h2>Insights</h2>
+            <div class="box">
+                {% for insight in insights %}
+                    <p>{{ insight }}</p>
+                {% endfor %}
+            </div>
+        </section>
+        <section>
+            <h2>Summaries</h2>
+            <div class="box">
+                {% for summary in summaries %}
+                    <p>{{ summary }}</p>
+                {% endfor %}
+            </div>
+        </section>
         <a href="/">Go Back</a>
     </main>
 </body>
