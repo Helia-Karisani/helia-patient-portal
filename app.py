@@ -92,6 +92,25 @@ def parse_care_plan(care_plan, patient_id):
         "activities": ", ".join([a.get("detail", {}).get("code", {}).get("coding", [{}])[0].get("display", "") for a in care_plan.get("activity", [])])
     }
 
+
+def generate_summaries_with_openai(insights):
+    summaries = []
+    for insight in insights:
+        try:
+            response = client.chat.completions.create(
+                messages=[
+                    {
+                        "role": "user",
+                        "content": f"Summarize this medical insight for a layperson: {insight}"
+                    }
+                ],
+                model="gpt-4o"
+            )
+            summaries.append(response.choices[0].message.content.strip())
+        except Exception as e:
+            summaries.append(f"Error in generating summary: {e}")
+    return summaries
+
 def generate_insights_with_openai(patient, care_plans, diagnostic_reports):
     prompt = f"""
     Patient Information:
@@ -118,6 +137,10 @@ def generate_insights_with_openai(patient, care_plans, diagnostic_reports):
         return [response.choices[0].message.content.strip()]
     except Exception as e:
         return [f"Error in generating insights: {e}"]
+
+
+
+
 
 @app.route('/')
 def index():
@@ -156,7 +179,7 @@ def upload():
             return "No patient data found in the JSON."
 
         insights = generate_insights_with_openai(patient_data, care_plans, diagnostic_reports)
-        summaries = [insight[:300] + "..." for insight in insights]  # Truncated summaries for brevity
+        summaries = generate_summaries_with_openai(insights)
 
 
 

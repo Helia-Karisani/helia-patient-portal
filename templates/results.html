@@ -21,14 +21,16 @@
         <section>
             <h2>Insights</h2>
             <div class="box">
-                {% for insight in insights %}
-                    <p>{{ insight }}</p>
-                {% endfor %}
+                <ol>
+                    {% for insight in insights %}
+                        <li>{{ insight.replace('\\n', '<br>')|safe }}</li>
+                    {% endfor %}
+                </ol>
             </div>
         </section>
         <section>
             <h2>Summaries</h2>
-            <div class="box">
+            <div class="box large-box">
                 {% for summary in summaries %}
                     <p>{{ summary }}</p>
                 {% endfor %}

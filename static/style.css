@@ -27,15 +27,34 @@ main {
     text-align: center;
 }
 
-form {
+.box {
     background: white;
     padding: 20px;
     border-radius: 8px;
+    margin-bottom: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    max-height: 400px; /* Add scroll if needed */
+    overflow-y: auto;
 }
 
-input[type="file"] {
+.large-box {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+ol {
+    padding-left: 20px;
+}
+
+ol li {
     margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+p {
+    margin-bottom: 10px;
+    line-height: 1.6;
 }
 
 button {
@@ -49,12 +68,4 @@ button {
 
 button:hover {
     background-color: #0056b3;
-}
-
-.box {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
