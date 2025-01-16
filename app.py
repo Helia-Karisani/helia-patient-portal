@@ -90,7 +90,7 @@ def generate_summaries_with_openai(insights):
     return summaries
 
 
-def generate_insights_with_openai(patient, care_plans, diagnostic_reports,conditions):
+def generate_insights_with_openai(patient, care_plans, diagnostic_reports, conditions):
     prompt = f"""
     Patient Information:
     Name: {patient['name']}

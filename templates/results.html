@@ -20,20 +20,14 @@
     <main>
         <section>
             <h2>Insights</h2>
-            <div class="box">
-                <ol>
-                    {% for insight in insights %}
-                        <li>{{ insight.replace('\\n', '<br>')|safe }}</li>
-                    {% endfor %}
-                </ol>
+            <div class="box markdown">
+                {{ insights|safe }}
             </div>
         </section>
         <section>
             <h2>Summaries</h2>
-            <div class="box large-box">
-                {% for summary in summaries %}
-                    <p>{{ summary }}</p>
-                {% endfor %}
+            <div class="box markdown">
+                {{ summaries|safe }}
             </div>
         </section>
         <a href="/">Go Back</a>
