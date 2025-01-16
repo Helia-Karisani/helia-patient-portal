@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Insights</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <h1>Generated Insights</h1>
+    </header>
+    <main>
+        <h2>Insights for the Uploaded File</h2>
+        <ul>
+            {% for insight in insights %}
+                <li>{{ insight }}</li>
+            {% endfor %}
+        </ul>
+        <a href="/">Go Back</a>
+    </main>
+</body>
+</html>
