@@ -90,7 +90,7 @@ def generate_summaries_with_openai(insights):
     return summaries
 
 
-def generate_insights_with_openai(patient, care_plans, diagnostic_reports):
+def generate_insights_with_openai(patient, care_plans, diagnostic_reports,conditions):
     prompt = f"""
     Patient Information:
     Name: {patient['name']}
@@ -161,7 +161,7 @@ def upload():
         if not patient_data:
             return "No patient data found in the JSON."
 
-        insights = generate_insights_with_openai(patient_data, care_plans, diagnostic_reports)
+        insights = generate_insights_with_openai(patient_data, care_plans, diagnostic_reports,conditions)
         summaries = generate_summaries_with_openai(insights)
 
         return render_template('results.html', insights=insights, summaries=summaries)
